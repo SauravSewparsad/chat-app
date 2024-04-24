@@ -87,12 +87,13 @@ function App() {
                   <img className='w-10 h-10 rounded-full' src={msg.data.photoURL} />
                   <div>
                     <div>{msg.data.text}</div>
-                    {msg.data.replyTo && (
+                    {/*Line 91 - 96 is the code that is causing the message to disappear.*/}
+                    {/*{msg.data.replyTo && (
                       <div className="reply">
                         <span>Replying to:</span>
                         <div>{messages.find(m => m.id === msg.data.replyTo).data.displayName}</div>
                       </div>
-                    )}
+                    )}*/}
                     <button onClick={() => handleReply(msg.id)}>Reply</button>
                   </div>
                 </div>
