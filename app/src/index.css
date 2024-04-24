@@ -71,6 +71,7 @@ button:focus-visible {
 .message.other{
   background-color: #213547;
   align-self: flex-start;
+  color: white;
 }
 /*small profile image*/
 .message img {
