@@ -77,7 +77,7 @@ const handleGoogleLogin = async () => {
 
 {messages.map(msg => (
   <div  key={msg.id} className={`message flex ${msg.data.uid === user.uid ? 'justify-end' : 'justify-start  '}`}>
-  <div className={`message flex flex-row p-3 gap-3 rounded-[20px] items-center ${msg.data.uid === user.uid ? ' text-white bg-blue-500' : ' bg-white '}`}>
+  <div className={`message flex flex-row p-3 gap-3 rounded-[20px] items-center ${msg.data.uid === user.uid ? 'current' : 'other'}`}>
     <img className='w-10 h-10 rounded-full' src={msg.data.photoURL} />
    {msg.data.text}
   </div>
