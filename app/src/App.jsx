@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 import { GoogleAuthProvider, onAuthStateChanged, signInWithPopup } from 'firebase/auth';
 import { getFirestore, onSnapshot, collection, addDoc, orderBy, query, serverTimestamp, deleteDoc, doc } from 'firebase/firestore';
@@ -12,6 +12,7 @@ function App() {
   const [newMessage, setNewMessage] = useState('');
   const [replyToMessageId, setReplyToMessageId] = useState(null);
   const [moreOptionsMessageId, setMoreOptionsMessageId] = useState(null);
+  const messagesEndRef = useRef(null);
 
   useEffect(() => {
     const q = query(collection(db, 'messages'), orderBy('timestamp'));
@@ -34,7 +35,17 @@ function App() {
     });
   }, []);
 
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
   const sendMessage = async () => {
+    if (!newMessage.trim()) return; // Don't send empty messages
+
     const messageData = {
       uid: user.uid,
       photoURL: user.photoURL,
@@ -90,31 +101,41 @@ function App() {
           </div>
           <div className='Message-area'>
             {messages.map(msg => (
-              <div key={msg.id} className={`message flex ${msg.data.uid === user.uid ? 'justify-end' : 'justify-start'}`}>
-                {/* More options menu */}
-                <div className="more-options" onClick={() => handleMoreOptions(msg.id)}>
-                      &#8942;
-                      {moreOptionsMessageId === msg.id && (
-                        <div className="options-menu">
-                          {user.uid === msg.data.uid ? (
-                            <>
-                              <div onClick={() => handleReply(msg.id)}>Reply</div>
-                              <div onClick={() => handleDelete(msg.id)}>Delete</div>
-                            </>
-                          ) : (
-                            <div onClick={() => handleReply(msg.id)}>Reply</div>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                <div className={`message ${msg.data.uid === user.uid ? 'current' : 'other'}`}>
-                  <img src={msg.data.photoURL} />
-                  <div>
-                    <div>{msg.data.text}</div>
-                  </div>
-                </div>
-              </div>
+             <div className={`message flex ${msg.data.uid === user.uid ? 'justify-end' : 'justify-start'}`}>
+             {/* More options menu */}
+             <div className="more-options" onClick={() => handleMoreOptions(msg.id)}>
+               &#8942;
+               {moreOptionsMessageId === msg.id && (
+                 <div className="options-menu">
+                   {user.uid === msg.data.uid ? (
+                     <>
+                       <div onClick={() => handleReply(msg.id)}>Reply</div>
+                       <div onClick={() => handleDelete(msg.id)}>Delete</div>
+                     </>
+                   ) : (
+                     <div onClick={() => handleReply(msg.id)}>Reply</div>
+                   )}
+                 </div>
+               )}
+             </div>
+             <div className={`message ${msg.data.uid === user.uid ? 'current' : 'other'}`}>
+               <div>
+                 <strong>{msg.data.displayName}</strong>
+               </div>
+               <img src={msg.data.photoURL} /> 
+               {msg.data.text}
+               <div style={{ textAlign: 'right' }}>
+                 <div className="timestamp">
+                   {/* Splitting the timestamp into date and time */}
+                   {new Date(msg.data.timestamp?.toDate()).toLocaleDateString()}&nbsp;
+                   {new Date(msg.data.timestamp?.toDate()).toLocaleTimeString()}
+                 </div>
+               </div>
+             </div>
+           </div>
+           
             ))}
+            <div ref={messagesEndRef} />
           </div>
         </div>
       ) :
@@ -126,11 +147,11 @@ function App() {
           value={newMessage}
           onChange={e => setNewMessage(e.target.value)}
           placeholder='Type your message....'
+          required // Add the required attribute
         />
         <button onClick={sendMessage}>Send Message</button>
       </div>
     </div>
-    
   );
 }
 
