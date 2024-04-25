@@ -5,8 +5,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-}
 
+}
 .header {
   position: fixed;
   top: 0;
@@ -29,9 +29,24 @@
 .Message-area{
   flex: 1;
   overflow-y: auto;
-  padding: 20px;
+  padding: 80px;
   padding-bottom: 30px;
+  
 }
+.timestamp .date {
+  font-size: 11px;
+  margin-top: 100px; 
+}
+
+.timestamp .time {
+  font-size: 11px;
+  margin-bottom: 100px;
+}
+.timestamp{
+  font-size: 11px;
+  margin-top: 20px;
+}
+
 
 /*message style*/
 .message{
@@ -84,7 +99,7 @@
   background-color: #333333;
 
   input{
-    font-size: 30px;
+    font-size: 25px;
     background-color: transparent;
     border: none;
     width: 60%;
@@ -113,7 +128,19 @@
   right: 0;
   z-index: 10;
   color: white;
+  font-size: 15px;
 }
+
+body {
+  max-width: 1580px;
+  margin: 0 auto;
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: lightgrey; 
+}
+
 
 
 

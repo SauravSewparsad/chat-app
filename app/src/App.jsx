@@ -135,13 +135,22 @@ function App() {
                {msg.data.text}
                <div style={{ textAlign: 'right' }}>
                  <div className="timestamp">
-                   {/* Splitting the timestamp into date and time */}
-                   {new Date(msg.data.timestamp?.toDate()).toLocaleDateString()}&nbsp;
+                   <span className = "date">
+                    {new Date(msg.data.timestamp?.toDate()).toLocaleDateString()}
+                   </span>
+                   &nbsp;
+                   <span className="time">
                    {new Date(msg.data.timestamp?.toDate()).toLocaleTimeString()}
+                  </span>
                  </div>
                </div>
              </div>
            </div>
+
+
+
+
+
            
             ))}
             <div ref={messagesEndRef} />
