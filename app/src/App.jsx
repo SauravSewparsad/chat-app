@@ -14,6 +14,7 @@ function App() {
   const [newMessage, setNewMessage] = useState('');
   const [replyToMessageId, setReplyToMessageId] = useState(null);
   const [moreOptionsMessageId, setMoreOptionsMessageId] = useState(null);
+  const [isInputFocused, setIsInputFocused] = useState(false); // State to track input focus
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
@@ -111,7 +112,6 @@ function App() {
           <div className='Message-area'>
             {messages.map(msg => (
              <div key={msg.id}className={`message flex ${msg.data.uid === user.uid ? 'justify-end' : 'justify-start'}`}>
-             {/* More options menu */}
              <div className="more-options" onClick={() => handleMoreOptions(msg.id)}>
                &#8942;
                {moreOptionsMessageId === msg.id && (
@@ -146,12 +146,6 @@ function App() {
                </div>
              </div>
            </div>
-
-
-
-
-
-           
             ))}
             <div ref={messagesEndRef} />
           </div>
@@ -160,6 +154,9 @@ function App() {
             <input
              value={newMessage}
              onChange={e => setNewMessage(e.target.value)}
+             onFocus={() => setIsInputFocused(true)}
+             onBlur={() => setIsInputFocused(false)}
+             style={{ backgroundColor: isInputFocused ? 'white' : '' }}
              placeholder='Type your message....'
             />
             <button onClick={sendMessage}>Send Message</button>
