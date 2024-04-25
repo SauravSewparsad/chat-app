@@ -69,22 +69,21 @@ function App() {
   };
 
   return (
-    <div className='flex justify-center bg-gray-800 py-10 min-h-screen'>
+    <div>
       {user ? (
         <div>
-          <div>Logged in as {user.displayName}</div>
-          <input
-            value={newMessage}
-            onChange={e => setNewMessage(e.target.value)}
-          />
-          <button className='bg-white rounded-[10px] hover:bg-blue-400 p-3' onClick={sendMessage}>Send Message</button>
-          <button className='mb-8 bg-white rounded-[10px] p-3' onClick={() => auth.signOut()}>Logout</button>
+          <div className="header">
 
-          <div className="flex flex-col gap-5">
+          <div>Logged in as {user.displayName}</div>
+          <button onClick={() => auth.signOut()}>Logout</button>
+          
+          </div>
+        
+          <div className='Message-area'>
             {messages.map(msg => (
               <div key={msg.id} className={`message flex ${msg.data.uid === user.uid ? 'justify-end' : 'justify-start'}`}>
-                <div className={`message flex flex-row p-3 gap-3 rounded-[20px] items-center ${msg.data.uid === user.uid ? 'current' : 'other'}`}>
-                  <img className='w-10 h-10 rounded-full' src={msg.data.photoURL} />
+                <div className={`message ${msg.data.uid === user.uid ? 'current' : 'other'}`}>
+                  <img src={msg.data.photoURL} />
                   <div>
                     <div>{msg.data.text}</div>
                     {/*Line 91 - 96 is the code that is causing the message to disappear.*/}
@@ -104,7 +103,17 @@ function App() {
       ) :
         <button onClick={handleGoogleLogin}>Login with Google</button>
       }
+  
+      <div className="footer">
+      <input
+            value={newMessage}
+            onChange={e => setNewMessage(e.target.value)}
+            placeholder='Type your message....'
+      />
+      <button onClick={sendMessage}>Send Message</button>
+      </div>
     </div>
+    
   );
 }
 
