@@ -91,13 +91,8 @@ function App() {
           <div className='Message-area'>
             {messages.map(msg => (
               <div key={msg.id} className={`message flex ${msg.data.uid === user.uid ? 'justify-end' : 'justify-start'}`}>
-                <div className={`message ${msg.data.uid === user.uid ? 'current' : 'other'}`}>
-                  <img src={msg.data.photoURL} />
-                  <div>
-                    <div>{msg.data.text}</div>
-                    
-                    {/* More options menu */}
-                    <div className="more-options" onClick={() => handleMoreOptions(msg.id)}>
+                {/* More options menu */}
+                <div className="more-options" onClick={() => handleMoreOptions(msg.id)}>
                       &#8942;
                       {moreOptionsMessageId === msg.id && (
                         <div className="options-menu">
@@ -112,6 +107,10 @@ function App() {
                         </div>
                       )}
                     </div>
+                <div className={`message ${msg.data.uid === user.uid ? 'current' : 'other'}`}>
+                  <img src={msg.data.photoURL} />
+                  <div>
+                    <div>{msg.data.text}</div>
                   </div>
                 </div>
               </div>

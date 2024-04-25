@@ -116,10 +116,9 @@
 
 .more-options {
   position: relative;
+  float: inline-end;
+  margin-right: 10%;
   cursor: pointer;
-  padding-left: 90%;
-  padding-bottom: 40%;
-  
 }
 
 .options-menu {
