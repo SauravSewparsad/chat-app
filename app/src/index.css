@@ -54,44 +54,6 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-/*message style*/
-.message{
-  padding: 10px;
-  border-radius: 10px;
-  margin-bottom: 10px;
-}
-/*Current user boxes color*/
-.message.current {
-  background-color: green;
-  color: white;
-  align-self: flex-end;
-}
-
-/*Other users box color*/
-.message.other{
-  background-color: #213547;
-  align-self: flex-start;
-  color: white;
-}
-/*small profile image*/
-.message img {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-right: 10px;
-}
-
-/*layout*/
-.messages{
-  max-width: 800px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  height: 500px;
-  overflow: auto;
-}
-
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

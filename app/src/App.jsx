@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import './App.css';
 import { GoogleAuthProvider, onAuthStateChanged, signInWithPopup } from 'firebase/auth';
-import { getFirestore, onSnapshot, collection, addDoc, orderBy, query, serverTimestamp } from 'firebase/firestore';
+import { getFirestore, onSnapshot, collection, addDoc, orderBy, query, serverTimestamp, deleteDoc, doc } from 'firebase/firestore';
 import { auth, app } from '../firebase';
 
 const db = getFirestore(app);
@@ -11,6 +11,7 @@ function App() {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [replyToMessageId, setReplyToMessageId] = useState(null);
+  const [moreOptionsMessageId, setMoreOptionsMessageId] = useState(null);
 
   useEffect(() => {
     const q = query(collection(db, 'messages'), orderBy('timestamp'));
@@ -42,7 +43,6 @@ function App() {
       timestamp: serverTimestamp()
     };
 
-    // If replying to a message, add a replyTo field
     if (replyToMessageId) {
       messageData.replyTo = replyToMessageId;
     }
@@ -68,33 +68,49 @@ function App() {
     setNewMessage(`@${userName}: `);
   };
 
+  const handleMoreOptions = (messageId) => {
+    setMoreOptionsMessageId(moreOptionsMessageId === messageId ? null : messageId);
+  };
+
+  const handleDelete = async (messageId) => {
+    try {
+      await deleteDoc(doc(db, 'messages', messageId));
+    } catch (error) {
+      console.error('Error deleting document: ', error);
+    }
+  };
+
   return (
-    <div className='flex justify-center bg-gray-800 py-10 min-h-screen'>
+    <div>
       {user ? (
         <div>
-          <div>Logged in as {user.displayName}</div>
-          <input
-            value={newMessage}
-            onChange={e => setNewMessage(e.target.value)}
-          />
-          <button className='bg-white rounded-[10px] hover:bg-blue-400 p-3' onClick={sendMessage}>Send Message</button>
-          <button className='mb-8 bg-white rounded-[10px] p-3' onClick={() => auth.signOut()}>Logout</button>
-
-          <div className="flex flex-col gap-5">
+          <div className="header">
+            <div>Logged in as {user.displayName}</div>
+            <button onClick={() => auth.signOut()}>Logout</button>
+          </div>
+          <div className='Message-area'>
             {messages.map(msg => (
               <div key={msg.id} className={`message flex ${msg.data.uid === user.uid ? 'justify-end' : 'justify-start'}`}>
-                <div className={`message flex flex-row p-3 gap-3 rounded-[20px] items-center ${msg.data.uid === user.uid ? 'current' : 'other'}`}>
-                  <img className='w-10 h-10 rounded-full' src={msg.data.photoURL} />
+                {/* More options menu */}
+                <div className="more-options" onClick={() => handleMoreOptions(msg.id)}>
+                      &#8942;
+                      {moreOptionsMessageId === msg.id && (
+                        <div className="options-menu">
+                          {user.uid === msg.data.uid ? (
+                            <>
+                              <div onClick={() => handleReply(msg.id)}>Reply</div>
+                              <div onClick={() => handleDelete(msg.id)}>Delete</div>
+                            </>
+                          ) : (
+                            <div onClick={() => handleReply(msg.id)}>Reply</div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                <div className={`message ${msg.data.uid === user.uid ? 'current' : 'other'}`}>
+                  <img src={msg.data.photoURL} />
                   <div>
                     <div>{msg.data.text}</div>
-                    {/*Line 91 - 96 is the code that is causing the message to disappear.*/}
-                    {/*{msg.data.replyTo && (
-                      <div className="reply">
-                        <span>Replying to:</span>
-                        <div>{messages.find(m => m.id === msg.data.replyTo).data.displayName}</div>
-                      </div>
-                    )}*/}
-                    <button onClick={() => handleReply(msg.id)}>Reply</button>
                   </div>
                 </div>
               </div>
@@ -104,10 +120,18 @@ function App() {
       ) :
         <button onClick={handleGoogleLogin}>Login with Google</button>
       }
+  
+      <div className="footer">
+        <input
+          value={newMessage}
+          onChange={e => setNewMessage(e.target.value)}
+          placeholder='Type your message....'
+        />
+        <button onClick={sendMessage}>Send Message</button>
+      </div>
     </div>
+    
   );
 }
 
-export default App
-
-
+export default App;

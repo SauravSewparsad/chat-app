@@ -41,6 +41,95 @@
   color: #646cff;
 }
 
+.Message-area{
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  padding-bottom: 80px;
+
+  /*message style*/
+.message{
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+/*Current user boxes color*/
+.message.current {
+  background-color: green;
+  color: white;
+  align-self: flex-end;
+}
+
+/*Other users box color*/
+.message.other{
+  background-color: #213547;
+  align-self: flex-start;
+  color: white;
+}
+/*small profile image*/
+.message img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+/*layout*/
+.messages{
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  height: 500px;
+  overflow: auto;
+
+}
+
+}
+
+
+.footer{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #333333;
+
+  input{
+    font-size: 30px;
+    background-color: transparent;
+    border: none;
+    width: 60%;
+  }
+
+  button{
+    display: flex;
+     background-color: red;
+     margin-left: 10px;
+  }
+}
+
+.more-options {
+  position: relative;
+  float: inline-end;
+  margin-right: 10%;
+  cursor: pointer;
+  color: white;
+
+}
+
+.options-menu {
+  position: absolute;
+  top:20 ;
+  right: 0;
+  z-index: 10;
+  color: white;
+}
 
 
 
