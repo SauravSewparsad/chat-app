@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './App.css';
 import { GoogleAuthProvider, onAuthStateChanged, signInWithPopup } from 'firebase/auth';
 import { getFirestore, onSnapshot, collection, addDoc, orderBy, query, serverTimestamp, deleteDoc, doc } from 'firebase/firestore';
@@ -93,17 +93,24 @@ function App() {
     }
   };
 
+  {/*-----------------------------------------------------------Chat app display-----------------------------------------------------------*/}
   return (
     <div>
       {user ? (
         <div>
           <div className="header">
-            <div>Logged in as {user.displayName}</div>
+
+            {/*Display the user that is logged in*/}
+            <div className='user_name'>{user.displayName}</div>
+
+            {/*Logout button that will log the user out of the account*/}
             <button onClick={() => auth.signOut()}>Logout</button>
           </div>
+
+{/*--------------------------------------------------------------Messages-----------------------------------------------------------*/}
           <div className='Message-area'>
             {messages.map(msg => (
-             <div className={`message flex ${msg.data.uid === user.uid ? 'justify-end' : 'justify-start'}`}>
+             <div key={msg.id}className={`message flex ${msg.data.uid === user.uid ? 'justify-end' : 'justify-start'}`}>
              {/* More options menu */}
              <div className="more-options" onClick={() => handleMoreOptions(msg.id)}>
                &#8942;
@@ -139,18 +146,23 @@ function App() {
             ))}
             <div ref={messagesEndRef} />
           </div>
+{/*---------------------------------------------------------Message box-----------------------------------------------------------------*/}
+          <div className="footer">
+            <input
+             value={newMessage}
+             onChange={e => setNewMessage(e.target.value)}
+             placeholder='Type your message....'
+            />
+            <button onClick={sendMessage}>Send Message</button>
+          </div>
         </div>
       ) :
-      (         <div> <i className="fas fa-key fa-6x" style={{ marginLeft: '150px', color: "black"}}></i> <h1 style={{ marginLeft: '-15px', color: "black"}}>Chat Application</h1>           <button onClick={handleGoogleLogin} style={{ marginLeft: '90px' }}>Login with Google</button>         </div>       )}
-      <div className="footer">
-        <input
-          value={newMessage}
-          onChange={e => setNewMessage(e.target.value)}
-          placeholder='Type your message....'
-          required // Add the required attribute
-        />
-        <button onClick={sendMessage}>Send Message</button>
-      </div>
+      ( <div> 
+        <i className="fas fa-key fa-6x" style={{ marginLeft: '150px', color: "black"}}>
+          </i> <h1 style={{ marginLeft: '-15px', color: "black"}}>Chat Application</h1>
+          <button onClick={handleGoogleLogin} style={{ marginLeft: '90px' }}>Login with Google</button>
+      </div>       
+    )}
     </div>
   );
 }
