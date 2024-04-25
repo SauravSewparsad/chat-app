@@ -83,6 +83,7 @@
   flex-direction: column;
   height: 500px;
   overflow: auto;
+
 }
 
 }
@@ -111,6 +112,21 @@
      background-color: red;
      margin-left: 10px;
   }
+}
+
+.more-options {
+  position: relative;
+  cursor: pointer;
+  padding-left: 90%;
+  padding-bottom: 40%;
+  
+}
+
+.options-menu {
+  position: absolute;
+  top:20 ;
+  right: 0;
+  z-index: 10;
 }
 
 
