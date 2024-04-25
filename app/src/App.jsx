@@ -3,6 +3,8 @@ import './App.css';
 import { GoogleAuthProvider, onAuthStateChanged, signInWithPopup } from 'firebase/auth';
 import { getFirestore, onSnapshot, collection, addDoc, orderBy, query, serverTimestamp, deleteDoc, doc } from 'firebase/firestore';
 import { auth, app } from '../firebase';
+import '@fortawesome/fontawesome-free/css/all.css';
+
 
 const db = getFirestore(app);
 
@@ -139,9 +141,7 @@ function App() {
           </div>
         </div>
       ) :
-        <button onClick={handleGoogleLogin}>Login with Google</button>
-      }
-  
+      (         <div> <i className="fas fa-key fa-6x" style={{ marginLeft: '150px', color: "black"}}></i> <h1 style={{ marginLeft: '-15px', color: "black"}}>Chat Application</h1>           <button onClick={handleGoogleLogin} style={{ marginLeft: '90px' }}>Login with Google</button>         </div>       )}
       <div className="footer">
         <input
           value={newMessage}
